@@ -4,6 +4,7 @@ import 'leaflet/dist/leaflet.css';
 import ATMIcon from './pics/ATM_mark.png';
 import { voronoi } from 'd3-voronoi';
 import styles from './styles/Map.module.css';
+
 class Map extends Component {
     
     constructor(props) {
@@ -118,10 +119,9 @@ class Map extends Component {
     };
 
     render() {
-        const buttonClass = `nes-btn ${styles.atmButton}`;
         return (
             <div ref={this.mapRef} className={styles.mapBox}>
-                <button className={buttonClass} onClick={this.toggleVoronoiVisibility}>
+                <button class='nes-btn' onClick={this.toggleVoronoiVisibility}>
                     {this.state.voronoiVisible ? 'Hide ATM Voronoi' : 'Show ATM Voronoi'}
                 </button>
                 
