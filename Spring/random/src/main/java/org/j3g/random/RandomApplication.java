@@ -17,7 +17,7 @@ public class RandomApplication {
 		app.setDefaultProperties(Collections.singletonMap("server.port", "24110"));
 		DataManager asdf = new DataManager();
 		app.run();
-//		System.out.println(Arrays.toString(asdf.read_atms()));
+		System.out.println(Arrays.toString(asdf.read_atms()));
 
 	}
 
