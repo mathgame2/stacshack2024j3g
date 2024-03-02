@@ -121,7 +121,7 @@ class Map extends Component {
     render() {
         return (
             <div ref={this.mapRef} className={styles.mapBox}>
-                <button class='nes-btn' onClick={this.toggleVoronoiVisibility}>
+                <button id='btn' class='nes-btn' onClick={this.toggleVoronoiVisibility}>
                     {this.state.voronoiVisible ? 'Hide ATM Voronoi' : 'Show ATM Voronoi'}
                 </button>
                 

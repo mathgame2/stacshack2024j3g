@@ -3,9 +3,9 @@
     height: 100%;
 }
 
-Button {
+button {
     position: absolute;
     top: 20px;
-    left: 58vw; /* Position 20px from the right edge */
+    left: 58vw;
     z-index: 999;
 }

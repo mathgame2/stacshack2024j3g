@@ -13,14 +13,25 @@ const Body = ({ atmData }) => {
             atm.accessibility?.forEach(accessibility => {
                 accFilter.add(accessibility);
             });
+            accFilter.add("24HourService")
+            atm.services?.forEach(services => {
+                accFilter.add(services);
+            });
         });
+        console.log(atmData)
         
         const accList = Array.from(accFilter).map((value, index) => ({
             id: index + 1,
             text: value,
             checked: false
         }));
-        
+        for (let i in accList) {
+            // Remove non-alphanumeric characters and add space before capital letters
+            accList[i].text = accList[i].text
+                .replace(/[^a-zA-Z0-9]/g, '')
+                .replace(/([A-Z])/g, ' $1')
+                .trim();
+        }
         setItems(accList);
     }, [atmData]);
 
@@ -62,6 +73,7 @@ const Body = ({ atmData }) => {
                         <span>{item.text}</span>
                     </label>
                 ))}
+                <button className={styles.clearBtn}>Clear</button>
             </div>
         </div>  
     );
