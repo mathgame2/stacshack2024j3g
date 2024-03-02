@@ -38,15 +38,28 @@ class Map extends Component {
                 iconSize: [38, 38], // Set the size of the icon
                 iconAnchor: [19, 38], // Set the anchor point of the icon
             });
+    
             atmData.forEach(atm => {
-                const { latitude, longitude } = atm;
-                console.log('Adding marker at:', latitude, longitude);
-                if (latitude && longitude) {
-                    L.marker([latitude, longitude], { icon: customIcon }).addTo(this.map); // Use custom icon
+                const { coords, accessibility, id } = atm;
+                const { Latitude, Longitude } = coords;
+    
+                console.log('Adding marker at:', Latitude, Longitude);
+    
+                if (Latitude && Longitude) {
+                    // Create a popup with additional information
+                    const popupContent = `
+                        <b>ID:</b> ${id}<br>
+                        <b>Accessibility:</b> ${accessibility.join(', ')}
+                    `;
+                    
+                    // Create marker with popup
+                    const marker = L.marker([Latitude, Longitude], { icon: customIcon }).addTo(this.map);
+                    marker.bindPopup(popupContent); // Bind popup to marker
                 }
             });
         }
     }
+    
     
 
     render() {

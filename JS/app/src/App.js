@@ -12,7 +12,7 @@ const App = () => {
       setIsLoading(true);
       setError(null);
       try {
-        const response = await fetch('http://localhost:24110/api/get_geo_coords');
+        const response = await fetch('http://localhost:24110/api/get_atms');
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
