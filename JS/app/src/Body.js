@@ -4,8 +4,8 @@ import Map from './Map';
 
 const Body = ({ atmData }) => {
     const [items, setItems] = useState([]);
-    const [atmDataCopy, setAtmDataCopy] = useState(atmData || []); // Initialize with atmData or empty array
-    
+    const [atmDataCopy, setAtmDataCopy] = useState(atmData || []); 
+
     useEffect(() => {
         let accFilter = new Set();
         
@@ -25,11 +25,10 @@ const Body = ({ atmData }) => {
     }, [atmData]);
 
     useEffect(() => {
-        // Filter atmData based on the checked items
         const checkedItems = items.filter(item => item.checked);
         console.log(checkedItems)
         if (checkedItems.length === 0) {
-            setAtmDataCopy(atmData); // If no items are checked, show all atmData
+            setAtmDataCopy(atmData); 
         } else {
             const newAtmDataCopy = atmData?.filter(atm => 
                 checkedItems.some(checkedItem => 
@@ -38,7 +37,7 @@ const Body = ({ atmData }) => {
             );
             setAtmDataCopy(newAtmDataCopy);
         }
-    }, [items, atmData]); // React to changes in items or atmData
+    }, [items, atmData]); 
 
     const toggleCheckbox = (id) => {
         setItems(prevItems => prevItems.map(item =>

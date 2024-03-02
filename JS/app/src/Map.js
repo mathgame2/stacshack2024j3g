@@ -42,7 +42,6 @@ class Map extends Component {
     addAtmMarkers() {
         const { atmData } = this.props;
     
-        // Clear existing markers
         if (this.markersLayer) {
             this.markersLayer.clearLayers();
         } else {
@@ -57,12 +56,14 @@ class Map extends Component {
             });
     
             atmData.forEach(atm => {
-                const { coords, accessibility, id } = atm;
+                const { coords, accessibility, services, allday, id  } = atm;
                 const { Latitude, Longitude } = coords;
                 if (Latitude && Longitude) {
                     const popupContent = `
                         <b>ID:</b> ${id}<br>
-                        <b>Accessibility:</b> ${accessibility.join(', ')}
+                        <b>Accessibility:</b> ${accessibility.join(', ')}<br>
+                        <b>Services:</b> ${services.join(', ')}<br>
+                        <b>24H:</b> ${allday ? 'Yes' : 'No'}
                     `;
                     const marker = L.marker([Latitude, Longitude], { icon: customIcon });
                     marker.bindPopup(popupContent);

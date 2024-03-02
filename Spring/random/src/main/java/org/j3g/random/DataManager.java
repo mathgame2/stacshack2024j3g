@@ -1,7 +1,6 @@
 package org.j3g.random;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.j3g.random.data_objects.ATM;
 import org.j3g.random.data_objects.Branch;
@@ -15,7 +14,7 @@ import java.nio.file.Files;
 
 public class DataManager {
 
-    GeographicCoordinates[] read_geocoords() throws IOException {
+    GeographicCoordinates[] read_geocoords_atm() throws IOException {
         File file = new File(getClass().getResource("/data/atms.json").getFile());
         String data = Files.readString(file.toPath());
 
