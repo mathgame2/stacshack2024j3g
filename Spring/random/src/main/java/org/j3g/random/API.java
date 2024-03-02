@@ -25,6 +25,7 @@ public class API {
         return Files.readString(file.toPath());
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("api/get_geo_coords")
     GeographicCoordinates[] getGeoCoords() throws IOException {
         DataManager manager = new DataManager();

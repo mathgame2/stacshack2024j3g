@@ -12,7 +12,7 @@ const App = () => {
       setIsLoading(true);
       setError(null);
       try {
-        const response = await fetch('http://localhost:24110/api/get_atm_data');
+        const response = await fetch('http://localhost:24110/api/get_geo_coords');
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -32,7 +32,7 @@ const App = () => {
   return (
     <div className="App">
       <Header />
-      <Body />
+      <Body atmData={atmData} /> {/* Pass atmData directly */}
       <h1>ATM Data:</h1>
       {isLoading ? (
         <p>Loading...</p>
