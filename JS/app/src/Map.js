@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import ATMIcon from './pics/ATM_mark.png';
 
 class Map extends Component {
     
@@ -29,12 +30,19 @@ class Map extends Component {
 
     addAtmMarkers() {
         const { atmData } = this.props;
+        console.log('ATM Data:', atmData);
     
         if (atmData && Array.isArray(atmData)) {
+            const customIcon = L.icon({
+                iconUrl: ATMIcon, // Set the URL of the imported image
+                iconSize: [38, 38], // Set the size of the icon
+                iconAnchor: [19, 38], // Set the anchor point of the icon
+            });
             atmData.forEach(atm => {
                 const { latitude, longitude } = atm;
+                console.log('Adding marker at:', latitude, longitude);
                 if (latitude && longitude) {
-                    L.marker([latitude, longitude]).addTo(this.map);
+                    L.marker([latitude, longitude], { icon: customIcon }).addTo(this.map); // Use custom icon
                 }
             });
         }
