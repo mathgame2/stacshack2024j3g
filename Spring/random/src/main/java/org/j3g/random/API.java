@@ -1,11 +1,10 @@
 package org.j3g.random;
 
+import org.j3g.random.data_objects.ATM;
 import org.j3g.random.data_objects.GeographicCoordinates;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.xml.crypto.Data;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -31,6 +30,12 @@ public class API {
         return manager.read_geocoords();
     }
 
+
+    @GetMapping("api/get_atms")
+    ATM[] getAtms() throws IOException {
+        DataManager manager = new DataManager();
+        return manager.read_atms();
+    }
     /**
      *
      * @return String content of the branch data file

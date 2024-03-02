@@ -14,6 +14,7 @@ import org.j3g.random.data_objects.GeographicCoordinates;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class ATMArrayDeserializer extends StdDeserializer<ATM[]> {
@@ -38,11 +39,13 @@ public class ATMArrayDeserializer extends StdDeserializer<ATM[]> {
         JsonNode json_atms = node.get("data").findValue("ATM");
         json_atms.elements().forEachRemaining(x -> {
             String id_string = x.get("Identification").asText();
-            List<String> access;
+            List<String> access = new ArrayList<>();
             GeographicCoordinates coords;
             try {
-                access = List.of(mapper.readValue(x.get("Accessibility").asText(), String[].class));
-                 coords = mapper.readValue(x.findValue("GeorgraphicCoordinates").asText(), GeographicCoordinates.class);
+                for (final JsonNode objNode : x.get("Accessibility")){
+                    access.add(String.valueOf(objNode));
+                }
+                coords = mapper.readValue(x.findValue("GeographicCoordinates").toString(), GeographicCoordinates.class);
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);
             }

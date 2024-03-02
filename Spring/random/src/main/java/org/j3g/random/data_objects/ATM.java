@@ -39,4 +39,13 @@ public class ATM {
         this.accessibility = accessibility;
         this.ID = ID;
     }
+
+//    @Override
+//    public String toString() {
+//        return "ATM{" +
+//                "coords=" + coords +
+//                ", accessibility=" + accessibility +
+//                ", ID='" + ID + '\'' +
+//                '}';
+//    }
 }

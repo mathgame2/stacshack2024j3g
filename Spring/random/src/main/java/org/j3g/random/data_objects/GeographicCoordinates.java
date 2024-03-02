@@ -1,27 +1,34 @@
 package org.j3g.random.data_objects;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class GeographicCoordinates {
-    double latitude;
-    double longitude;
+    @JsonProperty
+    double Latitude;
+    @JsonProperty
+    double Longitude;
+
+    public GeographicCoordinates() {
+    }
 
     public GeographicCoordinates(double latitude, double longitude) {
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.Latitude = latitude;
+        this.Longitude = longitude;
     }
 
     public double getLatitude() {
-        return latitude;
+        return Latitude;
     }
 
     public void setLatitude(double latitude) {
-        this.latitude = latitude;
+        this.Latitude = latitude;
     }
 
     public double getLongitude() {
-        return longitude;
+        return Longitude;
     }
 
     public void setLongitude(double longitude) {
-        this.longitude = longitude;
+        this.Longitude = longitude;
     }
 }
