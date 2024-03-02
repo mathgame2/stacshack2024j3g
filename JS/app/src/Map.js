@@ -161,10 +161,8 @@ class Map extends Component {
         return (
             <div ref={this.mapRef} className={styles.mapBox}>
              <HiddenEffect onPasswordMatch={this.toggleAtmTriangles} />
-                <button class='nes-btn' onClick={this.toggleVoronoiVisibility}>
-                    {this.state.voronoiVisible ? 'Hide ATM Voronoi' : 'Show ATM Voronoi'}
-                </button>
-                
+                <input class='nes-btn' value={this.state.voronoiVisible ? 'Hide ATM Voronoi' : 'Show ATM Voronoi'}onClick={this.toggleVoronoiVisibility} />
+                   
             </div>
         );
     }
