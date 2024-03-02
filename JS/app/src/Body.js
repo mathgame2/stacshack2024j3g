@@ -13,7 +13,8 @@ const Body = ({ atmData }) => {
             atm.accessibility?.forEach(accessibility => {
                 accFilter.add(accessibility);
             });
-            accFilter.add("24HourService")
+           
+            // accFilter.add("\"allday\"")
             atm.services?.forEach(services => {
                 accFilter.add(services);
             });
@@ -25,35 +26,42 @@ const Body = ({ atmData }) => {
             text: value,
             checked: false
         }));
-        for (let i in accList) {
-            // Remove non-alphanumeric characters and add space before capital letters
-            accList[i].text = accList[i].text
-                .replace(/[^a-zA-Z0-9]/g, '')
-                .replace(/([A-Z])/g, ' $1')
-                .trim();
-        }
+        // for (let i in accList) {
+        //     // Remove non-alphanumeric characters and add space before capital letters
+        //     accList[i].text = accList[i].text
+        //         .replace(/[^a-zA-Z0-9]/g, '')
+        //         // .replace(/([A-Z])/g, ' $1')
+        //         // .trim();
+        // }
         setItems(accList);
     }, [atmData]);
 
     useEffect(() => {
         const checkedItems = items.filter(item => item.checked);
-        console.log(checkedItems)
+    
         if (checkedItems.length === 0) {
-            setAtmDataCopy(atmData); 
+            setAtmDataCopy(atmData);
         } else {
-            const newAtmDataCopy = atmData?.filter(atm => 
-                checkedItems.some(checkedItem => 
-                    atm.accessibility?.includes(checkedItem.text)
+            const newAtmDataCopy = atmData?.filter(atm =>
+                checkedItems.every(checkedItem => 
+                    atm.accessibility?.includes(checkedItem.text) || atm.services?.includes(checkedItem.text)
                 )
             );
             setAtmDataCopy(newAtmDataCopy);
         }
-    }, [items, atmData]); 
+    }, [items, atmData]);
+    
+    
 
     const toggleCheckbox = (id) => {
         setItems(prevItems => prevItems.map(item =>
             item.id === id ? { ...item, checked: !item.checked } : item
         ));
+    };
+
+    const clearCheckbox = () => {
+        setItems(items.map(item => ({ ...item, checked: false })));
+        setAtmDataCopy(atmData);
     };
 
     return (
@@ -62,18 +70,20 @@ const Body = ({ atmData }) => {
                 <Map atmData={atmDataCopy} />
             </div>
             <div className={styles.menuBox}>
-                <h2>Accessibility Filter</h2>
+                <h2>Filter</h2>
                 {items.map((item) => (
-                    <label key={item.id}>
-                        <input class="nes-checkbox"
-                            type="checkbox"
-                            checked={item.checked}
-                            onChange={() => toggleCheckbox(item.id)}
-                        />
-                        <span>{item.text}</span>
-                    </label>
+                    <div className={styles.filterBtns}>
+                        <label key={item.id}>
+                            <input class="nes-checkbox"
+                                type="checkbox"
+                                checked={item.checked}
+                                onChange={() => toggleCheckbox(item.id)}
+                            />
+                            <span>{item.text}</span>
+                        </label>
+                    </div>
                 ))}
-                <button className={styles.clearBtn}>Clear</button>
+                <button className={styles.clearBtn} onClick={()=>clearCheckbox()}>Clear</button>
             </div>
         </div>  
     );
