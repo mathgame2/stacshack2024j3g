@@ -1,30 +1,36 @@
-import React, { useState } from 'react';
-import styles from './styles/Body.module.css'
-import Map from './Map'
-
+import React, { useState, useEffect } from 'react';
+import styles from './styles/Body.module.css';
+import Map from './Map';
 
 const Body = ({ atmData }) => {
-    let accFilter = new Set()
-    for (let i in atmData) {
-        for (let j in atmData[i].accessibility) {
-            accFilter.add(atmData[i].accessibility[j])
-        }
-    }
-    const accList = []
-    let c = 1
-    accFilter.forEach(function(value){
-        accList.push({id:c, text:value, checked:false})
-        c = c+1
-    })    
-    const [items, setItems] = useState(accList);
-    const toggleCheckbox = (id) => {
-        setItems(
-            items.map((item) => 
-                item.id === id ? { ...item, checked: !item.checked } : item
-            )
-        );
-    };
+    const [items, setItems] = useState([]);
 
+    useEffect(() => {
+        let accFilter = new Set();
+        
+        if (atmData) {
+            for (let i in atmData) {
+                for (let j in atmData[i].accessibility) {
+                    accFilter.add(atmData[i].accessibility[j]);
+                }
+            }
+
+            const accList = Array.from(accFilter).map((value, index) => ({
+                id: index + 1,
+                text: value,
+                checked: false
+            }));
+
+            setItems(accList);
+        }
+    }, [atmData]); // Depend on atmData so it updates when atmData changes
+    
+    const toggleCheckbox = (id) => {
+        setItems(items.map((item) =>
+            item.id === id ? { ...item, checked: !item.checked } : item
+        ));
+    };
+    
     return (
         <div className={styles.bodyBox}>
             <div className={styles.mapBox}>
@@ -32,15 +38,15 @@ const Body = ({ atmData }) => {
             </div>
             <div className={styles.menuBox}>
                 {items.map((item) => (
-                    <div key={item.id}>
+                    <label key={item.id}>
                         <input
                             type="checkbox"
                             checked={item.checked}
                             onChange={() => toggleCheckbox(item.id)}
                         />
                         {item.text}
-                    </div>
-                ))}               
+                    </label>
+                ))}
             </div>
         </div>  
     );
