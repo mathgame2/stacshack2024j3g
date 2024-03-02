@@ -3,7 +3,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import ATMIcon from './pics/ATM_mark.png';
 import { voronoi } from 'd3-voronoi';
-
+import './Map.css';
 class Map extends Component {
     
     constructor(props) {
@@ -11,6 +11,9 @@ class Map extends Component {
         this.mapRef = React.createRef();
         this.map = null; 
         this.voronoiLayer = null;
+        this.state = {
+            voronoiVisible: true
+        };
     }
 
     componentDidMount() {
@@ -21,12 +24,18 @@ class Map extends Component {
             }).addTo(this.map);
 
             this.addAtmMarkers();
+            this.generateVoronoi();
         }
     }
 
-    componentDidUpdate(prevProps) {
-        if (prevProps.atmData !== this.props.atmData) {
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.atmData !== this.props.atmData || prevState.voronoiVisible !== this.state.voronoiVisible) {
             this.addAtmMarkers();
+            if (this.state.voronoiVisible) {
+                this.generateVoronoi();
+            } else {
+                this.removeVoronoi();
+            }
         }
     }
 
@@ -35,29 +44,23 @@ class Map extends Component {
     
         if (atmData && Array.isArray(atmData)) {
             const customIcon = L.icon({
-                iconUrl: ATMIcon, // Set the URL of the imported image
-                iconSize: [38, 38], // Set the size of the icon
-                iconAnchor: [19, 38], // Set the anchor point of the icon
+                iconUrl: ATMIcon,
+                iconSize: [38, 38],
+                iconAnchor: [19, 38],
             });
     
             atmData.forEach(atm => {
                 const { coords, accessibility, id } = atm;
                 const { Latitude, Longitude } = coords;
                 if (Latitude && Longitude) {
-                    // Create a popup with additional information
                     const popupContent = `
                         <b>ID:</b> ${id}<br>
                         <b>Accessibility:</b> ${accessibility.join(', ')}
                     `;
-                    
-                    // Create marker with popup
                     const marker = L.marker([Latitude, Longitude], { icon: customIcon }).addTo(this.map);
-                    marker.bindPopup(popupContent); // Bind popup to marker
+                    marker.bindPopup(popupContent);
                 }
             });
-
-            // Generate and add Voronoi diagram
-            this.generateVoronoi();
         }
     }
 
@@ -66,7 +69,7 @@ class Map extends Component {
         const points = atmData.map(atm => {
             const { coords } = atm;
             const { Latitude, Longitude } = coords;
-            return [Longitude, Latitude]; // Swap Longitude and Latitude for d3-voronoi
+            return [Longitude, Latitude];
         });
 
         const voronoiGenerator = voronoi().extent([[-1000, -1000], [this.map.getSize().x, this.map.getSize().y]]);
@@ -79,15 +82,37 @@ class Map extends Component {
         this.voronoiLayer = L.layerGroup();
 
         voronoiPolygons.forEach(polygon => {
-            const latlngs = polygon.map(point => [point[1], point[0]]); // Swap back to [Latitude, Longitude]
+            const latlngs = polygon.map(point => [point[1], point[0]]);
             L.polygon(latlngs, { color: 'blue' }).addTo(this.voronoiLayer);
         });
 
         this.voronoiLayer.addTo(this.map);
     }
-    
+
+    removeVoronoi() {
+        if (this.voronoiLayer) {
+            this.voronoiLayer.remove();
+            this.voronoiLayer = null;
+        }
+    }
+
+    toggleVoronoiVisibility = () => {
+        this.setState(prevState => ({
+            voronoiVisible: !prevState.voronoiVisible
+        }));
+    };
+
     render() {
-        return <div ref={this.mapRef} style={{ width: '100%', height: '100%' }} />;
+        return (
+            
+            <div ref={this.mapRef} style={{ width: '100%', height: '100%' }}>
+                <button className='atmButton' onClick={this.toggleVoronoiVisibility}>
+                    {this.state.voronoiVisible ? 'Hide ATM Voronoi' : 'Show ATM Voronoi'}
+                </button>
+            </div>
+               
+            
+        );
     }
 }
 
