@@ -3,6 +3,7 @@ import Body from './Body';
 import Header from './Header';
 import ErrorBoundary from './ErrorBoundary'
 import './styles/App.css';
+import HiddenEffect from './HiddenEffect'; 
 
 const App = () => {
   const [atmData, setAtmData] = useState(null);
@@ -37,6 +38,7 @@ const App = () => {
       <ErrorBoundary>
         <Body atmData={atmData} />
       </ErrorBoundary>
+      <HiddenEffect />
       <h1>ATM Data:</h1>
       {isLoading ? (
         <p>Loading...</p>
