@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
 public class API {
@@ -15,6 +16,7 @@ public class API {
      * 
      * @return String content of the atm data file
      */
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("api/get_atm_data")
     String getAtmData() throws IOException {
         File file = new File(getClass().getResource("/data/atms.json").getFile());
@@ -25,6 +27,7 @@ public class API {
      *
      * @return String content of the branch data file
      */
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("api/get_branch_data")
     String getBranchData() throws IOException {
         File file = new File(getClass().getResource("/data/atms.json").getFile());
