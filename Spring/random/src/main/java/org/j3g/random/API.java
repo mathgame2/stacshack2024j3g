@@ -1,9 +1,11 @@
 package org.j3g.random;
 
+import org.j3g.random.data_objects.GeographicCoordinates;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.xml.crypto.Data;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -13,7 +15,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 public class API {
 
     /**
-     * 
+     *
      * @return String content of the atm data file
      */
     @CrossOrigin(origins = "http://localhost:3000")
@@ -21,6 +23,12 @@ public class API {
     String getAtmData() throws IOException {
         File file = new File(getClass().getResource("/data/atms.json").getFile());
         return Files.readString(file.toPath());
+    }
+
+    @GetMapping("api/get_geo_coords")
+    GeographicCoordinates[] getGeoCoords() throws IOException {
+        DataManager manager = new DataManager();
+        return manager.read_geocoords();
     }
 
     /**
