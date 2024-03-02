@@ -25,10 +25,10 @@ public class API {
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("api/get_geo_coords")
-    GeographicCoordinates[] getGeoCoords() throws IOException {
+    @GetMapping("api/get_geo_coords_atm")
+    GeographicCoordinates[] getGeoCoordsAtm() throws IOException {
         DataManager manager = new DataManager();
-        return manager.read_geocoords();
+        return manager.read_geocoords_atm();
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
@@ -48,6 +48,10 @@ public class API {
         return Files.readString(file.toPath());
     }
 
-
+    @GetMapping("api/get_atm_triangles")
+    GeographicCoordinates[][] getAtmTriangles() throws IOException {
+        DataManager manager = new DataManager();
+        return new TriangleCalculator().calculateEquilateralTriangles(manager.read_geocoords_atm(), 0.002);
+    }
 
 }
