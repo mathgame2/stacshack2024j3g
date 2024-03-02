@@ -1,0 +1,19 @@
+
+.bodyBox {
+    display: flex;
+    flex-direction: horizontal;
+}
+
+.mapBox {
+    display: flex;
+    border: 2px solid black;
+    height: 90vh;
+    width: 70vw;
+}
+
+.menuBox {
+    display: flex;
+    border: 2px solid black;
+    height: 90vh;
+    width: 30vw;
+}
