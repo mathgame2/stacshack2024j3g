@@ -42,6 +42,13 @@ class Map extends Component {
     addAtmMarkers() {
         const { atmData } = this.props;
     
+        // Clear existing markers
+        if (this.markersLayer) {
+            this.markersLayer.clearLayers();
+        } else {
+            this.markersLayer = L.layerGroup().addTo(this.map);
+        }
+    
         if (atmData && Array.isArray(atmData)) {
             const customIcon = L.icon({
                 iconUrl: ATMIcon,
@@ -57,12 +64,14 @@ class Map extends Component {
                         <b>ID:</b> ${id}<br>
                         <b>Accessibility:</b> ${accessibility.join(', ')}
                     `;
-                    const marker = L.marker([Latitude, Longitude], { icon: customIcon }).addTo(this.map);
+                    const marker = L.marker([Latitude, Longitude], { icon: customIcon });
                     marker.bindPopup(popupContent);
+                    this.markersLayer.addLayer(marker);
                 }
             });
         }
     }
+    
 
     generateVoronoi() {
         const { atmData } = this.props;
