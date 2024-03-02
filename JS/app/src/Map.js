@@ -66,11 +66,16 @@ class Map extends Component {
 
     generateVoronoi() {
         const { atmData } = this.props;
-        const points = atmData.map(atm => {
-            const { coords } = atm;
-            const { Latitude, Longitude } = coords;
-            return [Longitude, Latitude];
-        });
+        let points = [];
+
+        if (atmData && atmData.length > 0) {
+            points = atmData.map(atm => {
+                const { coords } = atm;
+                const { Latitude, Longitude } = coords;
+                return [Longitude, Latitude];
+            });
+        }
+
 
         const voronoiGenerator = voronoi().extent([[-1000, -1000], [this.map.getSize().x, this.map.getSize().y]]);
         const voronoiPolygons = voronoiGenerator(points).polygons();
