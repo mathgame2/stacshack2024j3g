@@ -43,7 +43,7 @@ class Map extends Component {
                 const { coords, accessibility, id } = atm;
                 const { Latitude, Longitude } = coords;
     
-                console.log('Adding marker at:', Latitude, Longitude);
+                // console.log('Adding marker at:', Latitude, Longitude);
     
                 if (Latitude && Longitude) {
                     // Create a popup with additional information
