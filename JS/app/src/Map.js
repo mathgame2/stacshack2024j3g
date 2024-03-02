@@ -4,6 +4,8 @@ import 'leaflet/dist/leaflet.css';
 import ATMIcon from './pics/ATM_mark.png';
 import { voronoi } from 'd3-voronoi';
 import styles from './styles/Map.module.css';
+import HiddenEffect from './HiddenEffect'; 
+import atm_triangles from './data/atm_triangles.json';
 
 class Map extends Component {
     
@@ -13,6 +15,7 @@ class Map extends Component {
         this.map = null; 
         this.voronoiLayer = null;
         this.state = {
+            showAtmTriangles: false,
             voronoiVisible: true
         };
     }
@@ -26,6 +29,7 @@ class Map extends Component {
 
             this.addAtmMarkers();
             this.generateVoronoi();
+            this.addAtmTriangles();
         }
     }
 
@@ -37,6 +41,13 @@ class Map extends Component {
             } else {
                 this.removeVoronoi();
             }
+            
+        }
+
+        if (this.state.showAtmTriangles) {
+            this.addAtmTriangles();
+        } else {
+            this.removeAtmTriangles();
         }
     }
 
@@ -73,8 +84,36 @@ class Map extends Component {
             });
         }
     }
-    
 
+    toggleAtmTriangles = (show) => {
+        this.setState({ showAtmTriangles: show });
+    }
+
+    removeAtmTriangles = () => {
+        if (this.trianglesLayer) {
+            this.trianglesLayer.remove();
+            this.trianglesLayer = null;
+        }
+    }
+
+    addAtmTriangles() {
+        const triangles = atm_triangles;  // Assuming atm_triangles is imported
+
+        if (this.trianglesLayer) {
+            this.trianglesLayer.clearLayers();
+        } else {
+            this.trianglesLayer = L.layerGroup().addTo(this.map);
+        }
+
+        triangles.forEach(triangle => {
+            const latlngs = triangle.map(point => [point.Latitude, point.Longitude]);
+            const polygon = L.polygon(latlngs, { 
+                color: 'red', 
+                fill: false  // Set fill to false
+            });
+            this.trianglesLayer.addLayer(polygon);
+        });
+    }
     generateVoronoi() {
         const { atmData } = this.props;
         let points = [];
@@ -121,7 +160,10 @@ class Map extends Component {
     render() {
         return (
             <div ref={this.mapRef} className={styles.mapBox}>
-                <input type="button" value={this.state.voronoiVisible ? 'Hide ATM Voronoi' : 'Show ATM Voronoi'}  class='nes-btn' onClick={this.toggleVoronoiVisibility} />    
+             <HiddenEffect onPasswordMatch={this.toggleAtmTriangles} />
+                <button class='nes-btn' onClick={this.toggleVoronoiVisibility}>
+                    {this.state.voronoiVisible ? 'Hide ATM Voronoi' : 'Show ATM Voronoi'}
+                </button>
                 
             </div>
         );
