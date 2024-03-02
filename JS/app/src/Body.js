@@ -4,51 +4,48 @@ import Map from './Map';
 
 const Body = ({ atmData }) => {
     const [items, setItems] = useState([]);
-    let atmDataCopy = atmData
-    // console.log(atmDataCopy.length)
+    const [atmDataCopy, setAtmDataCopy] = useState(atmData || []); // Initialize with atmData or empty array
+
     useEffect(() => {
         let accFilter = new Set();
         
-        if (atmData) {
-            for (let i in atmData) {
-                for (let j in atmData[i].accessibility) {
-                    accFilter.add(atmData[i].accessibility[j]);
-                }
-            }
+        atmData?.forEach(atm => {
+            atm.accessibility?.forEach(accessibility => {
+                accFilter.add(accessibility);
+            });
+        });
 
-            const accList = Array.from(accFilter).map((value, index) => ({
-                id: index + 1,
-                text: value,
-                checked: false
-            }));
+        const accList = Array.from(accFilter).map((value, index) => ({
+            id: index + 1,
+            text: value,
+            checked: false
+        }));
 
-            setItems(accList);
-        }
+        setItems(accList);
     }, [atmData]);
 
+    useEffect(() => {
+        // Filter atmData based on the checked items
+        const checkedItems = items.filter(item => item.checked);
+        console.log(checkedItems)
+        if (checkedItems.length === 0) {
+            setAtmDataCopy(atmData); // If no items are checked, show all atmData
+        } else {
+            const newAtmDataCopy = atmData?.filter(atm => 
+                checkedItems.some(checkedItem => 
+                    atm.accessibility?.includes(checkedItem.text)
+                )
+            );
+            setAtmDataCopy(newAtmDataCopy);
+        }
+    }, [items, atmData]); // React to changes in items or atmData
+
     const toggleCheckbox = (id) => {
-        setItems(items.map((item) =>
+        setItems(prevItems => prevItems.map(item =>
             item.id === id ? { ...item, checked: !item.checked } : item
         ));
     };
 
-    const filterAtm = (item) => {
-        toggleCheckbox(item.id)
-        filterData(item.text)
-        console.log('filterAtm', atmDataCopy.length)
-    }
-
-    const filterData = (text) => {
-        atmDataCopy = []
-        for (let k in atmData) {
-            for (let l in atmData[k].accessibility) {
-                if(atmData[k].accessibility[l] === text) {
-                    atmDataCopy.push(atmData[k])
-                }
-            }
-        }
-    }
-    
     return (
         <div className={styles.bodyBox}>
             <div className={styles.mapBox}>
@@ -60,7 +57,7 @@ const Body = ({ atmData }) => {
                         <input
                             type="checkbox"
                             checked={item.checked}
-                            onChange={() => filterAtm(item)}
+                            onChange={() => toggleCheckbox(item.id)}
                         />
                         {item.text}
                     </label>

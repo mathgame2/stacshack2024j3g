@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Body from './Body';
 import Header from './Header';
+import ErrorBoundary from './ErrorBoundary'
 
 const App = () => {
   const [atmData, setAtmData] = useState(null);
@@ -32,7 +33,9 @@ const App = () => {
   return (
     <div className="App">
       <Header />
-      <Body atmData={atmData} /> {/* Pass atmData directly */}
+      <ErrorBoundary>
+        <Body atmData={atmData} />
+      </ErrorBoundary>
       <h1>ATM Data:</h1>
       {isLoading ? (
         <p>Loading...</p>
