@@ -11,10 +11,11 @@
     width: 70vw;
 }
 
-.menuBox {
+.menuBox .nes-container{
     display: flex;
     flex-direction: column;
-    border: 2px solid black;
+    /* border: 2px solid black; */
     height: 90vh;
     width: 30vw;
+    margin: 3%;
 }

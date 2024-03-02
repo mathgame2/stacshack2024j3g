@@ -14,13 +14,13 @@ const Body = ({ atmData }) => {
                 accFilter.add(accessibility);
             });
         });
-
+        
         const accList = Array.from(accFilter).map((value, index) => ({
             id: index + 1,
             text: value,
             checked: false
         }));
-
+        
         setItems(accList);
     }, [atmData]);
 
@@ -51,14 +51,15 @@ const Body = ({ atmData }) => {
                 <Map atmData={atmDataCopy} />
             </div>
             <div className={styles.menuBox}>
+                <h2>Accessibility Filter</h2>
                 {items.map((item) => (
                     <label key={item.id}>
-                        <input
+                        <input class="nes-checkbox"
                             type="checkbox"
                             checked={item.checked}
                             onChange={() => toggleCheckbox(item.id)}
                         />
-                        {item.text}
+                        <span>{item.text}</span>
                     </label>
                 ))}
             </div>

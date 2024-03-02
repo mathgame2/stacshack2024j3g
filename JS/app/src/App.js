@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Body from './Body';
 import Header from './Header';
 import ErrorBoundary from './ErrorBoundary'
+import './styles/App.css';
 
 const App = () => {
   const [atmData, setAtmData] = useState(null);
