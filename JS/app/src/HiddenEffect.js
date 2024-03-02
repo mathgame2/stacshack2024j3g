@@ -1,17 +1,22 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import NotBill from './pics/not_bill.png';
+import './HiddenEffect.css'; 
+import yourMusicFile from './music/GravityFalls.mp3'; // Import your audio file
 
-const HiddenEffect = () => {
+const HiddenEffect = ({ onPasswordMatch }) => {
   let flag = [];
+  const [showImage, setShowImage] = useState(false);
   const passwordSequence = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
 
+  // Ref for the audio element
+  const audioRef = React.createRef();
+
   const handleKeyPress = (event) => {
-    // Add the pressed key to the flag array
     flag.push(event.key);
 
-    // Check if the flag array matches the password sequence
-    if(flag.leng != 0){
+    if(flag.length !== 0){
         setTimeout(() => {
-            flag = []; // Reset the flag array
+            flag = []; 
             console.log("reset")
           }, 3000);
     }
@@ -19,18 +24,32 @@ const HiddenEffect = () => {
     if (flag.length === passwordSequence.length) {
       if (flag.every((value, index) => value === passwordSequence[index])) {
         console.log("Password entered correctly");
+        setShowImage(true);
+        setTimeout(() => setShowImage(false), 3000); // Keep image visible for 5 seconds
+        onPasswordMatch(true); 
+        audioRef.current.play(); // Play the audio
       } else {
         console.log("Incorrect password");
+        onPasswordMatch(false);
         flag = [];
       }
     }
   };
+
   useEffect(() => {
     window.addEventListener('keydown', handleKeyPress);
+
     return () => {
       window.removeEventListener('keydown', handleKeyPress);
     };
   }, []); 
-  return null; 
+
+  return (
+    <>
+      {showImage && <img src={NotBill} alt="Not Bill" className="fade-in-out" />}
+      <audio ref={audioRef} src={yourMusicFile} />
+    </>
+  );
 };
+
 export default HiddenEffect;
