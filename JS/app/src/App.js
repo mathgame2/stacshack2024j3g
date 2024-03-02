@@ -37,14 +37,7 @@ const App = () => {
       <ErrorBoundary>
         <Body atmData={atmData} />
       </ErrorBoundary>
-      <h1>ATM Data:</h1>
-      {isLoading ? (
-        <p>Loading...</p>
-      ) : error ? (
-        <p>Error: {error}</p>
-      ) : (
-        atmData && <pre>{JSON.stringify(atmData, null, 2)}</pre>
-      )}
+     
     </div>
   );
 };
