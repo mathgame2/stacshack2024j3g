@@ -31,7 +31,7 @@ public class API {
         return manager.read_geocoords();
     }
 
-
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("api/get_atms")
     ATM[] getAtms() throws IOException {
         DataManager manager = new DataManager();
