@@ -10,6 +10,34 @@ public class ATM {
     List<String> accessibility;
     String ID;
 
+    String[] services;
+    boolean allday;
+
+
+    public ATM(GeographicCoordinates coords, List<String> accessibility, String ID, String[] services, boolean allday) {
+        this.coords = coords;
+        this.accessibility = accessibility;
+        this.ID = ID;
+        this.services = services;
+        this.allday = allday;
+    }
+
+    public String[] getServices() {
+        return services;
+    }
+
+    public void setServices(String[] services) {
+        this.services = services;
+    }
+
+    public boolean isAllday() {
+        return allday;
+    }
+
+    public void setAllday(boolean allday) {
+        this.allday = allday;
+    }
+
     public GeographicCoordinates getCoords() {
         return coords;
     }

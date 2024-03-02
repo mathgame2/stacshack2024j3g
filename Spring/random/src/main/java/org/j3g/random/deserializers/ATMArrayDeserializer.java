@@ -31,15 +31,25 @@ public class ATMArrayDeserializer extends StdDeserializer<ATM[]> {
         JsonNode node = jsonParser.getCodec().readTree(jsonParser);
         int totalResults = node.get("meta").get("TotalResults").asInt();
         List<ATM> atms = new ArrayList<ATM>();
+
         int counter = 0;
 
         ObjectMapper mapper = new ObjectMapper();
-        JsonFactory factory = mapper.getFactory();
 
         JsonNode json_atms = node.get("data").findValue("ATM");
         json_atms.elements().forEachRemaining(x -> {
             String id_string = x.get("Identification").asText();
             List<String> access = new ArrayList<>();
+            List<String> services = new ArrayList<>();
+            x.get("ATMServices").elements().forEachRemaining(service -> {
+                services.add(service.toString());
+            });
+
+            String[] string_services = new String[services.size()];
+            for (int i = 0; i < services.size(); i++) {
+                string_services[i] = services.get(i);
+            }
+            boolean hrs24 = x.get("Access24HoursIndicator").asBoolean();
             GeographicCoordinates coords;
             try {
                 for (final JsonNode objNode : x.get("Accessibility")){
@@ -49,7 +59,7 @@ public class ATMArrayDeserializer extends StdDeserializer<ATM[]> {
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);
             }
-            atms.add(new ATM(coords,access, id_string));
+            atms.add(new ATM(coords,access, id_string, string_services, hrs24));
         });
 
         return atms.toArray(new ATM[totalResults]);
