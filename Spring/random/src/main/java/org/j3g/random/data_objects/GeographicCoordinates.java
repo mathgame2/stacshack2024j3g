@@ -31,4 +31,12 @@ public class GeographicCoordinates {
     public void setLongitude(double longitude) {
         this.Longitude = longitude;
     }
+
+    @Override
+    public String toString() {
+        return "GeographicCoordinates{" +
+                "Latitude=" + Latitude +
+                ", Longitude=" + Longitude +
+                '}';
+    }
 }

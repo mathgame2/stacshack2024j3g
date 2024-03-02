@@ -17,8 +17,7 @@ public class RandomApplication {
 		app.setDefaultProperties(Collections.singletonMap("server.port", "24110"));
 		DataManager asdf = new DataManager();
 		app.run();
-		System.out.println(Arrays.toString(asdf.read_atms()));
-
+		System.out.println(Arrays.deepToString(new TriangleCalculator().calculateEquilateralTriangles(asdf.read_geocoords_atm(), 0.01)));
 	}
 
 }
